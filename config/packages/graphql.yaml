@@ -1,0 +1,12 @@
+overblog_graphql:
+    definitions:
+        schema:
+            query: Query
+#            mutation: Mutation
+        mappings:
+            auto_discover: true
+
+            types:
+                - type: attribute
+                  dir: '%kernel.project_dir%/src/Infrastructure/GraphQL'
+                  suffix: null
