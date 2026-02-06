@@ -2,6 +2,7 @@
 
 namespace App\Application\Repository;
 
+use App\Application\FilterCriteria\UserFilterCriteria;
 use App\Domain\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
@@ -19,24 +20,12 @@ readonly class UserRepository implements UserRepositoryInterface
     ) {
     }
 
-    public function fetchAll(): array
+    /**
+     * @return User[]
+     */
+    public function findByCriteria(UserFilterCriteria $criteria): array
     {
-        return $this->getStrategy()->fetchAll();
-    }
-
-    public function fetchById(int $id): ?User
-    {
-        return $this->getStrategy()->fetchById($id);
-    }
-
-    public function fetchByEmail(string $email): ?User
-    {
-        return $this->getStrategy()->fetchByEmail($email);
-    }
-
-    public function fetchByUsername(string $username): ?User
-    {
-        return $this->getStrategy()->fetchByUsername($username);
+        return $this->getStrategy()->findByCriteria($criteria);
     }
 
     private function getStrategy(): UserSourceStrategyInterface

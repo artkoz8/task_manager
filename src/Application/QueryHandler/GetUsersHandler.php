@@ -2,6 +2,7 @@
 
 namespace App\Application\QueryHandler;
 
+use App\Application\FilterCriteria\UserFilterCriteria;
 use App\Application\Query\GetUsersQuery;
 use App\Application\ReadModel\UserReadModel;
 use App\Application\Repository\UserRepositoryInterface;
@@ -21,7 +22,7 @@ readonly class GetUsersHandler
      */
     public function __invoke(GetUsersQuery $query): array
     {
-        $users = $this->userRepository->fetchAll();
+        $users = $this->userRepository->findByCriteria(UserFilterCriteria::fromQuery($query));
 
         return array_map(
             fn($user) => UserReadModel::fromEntity($user),

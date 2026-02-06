@@ -2,13 +2,14 @@
 
 namespace App\Tests\Application\Repository;
 
+use App\Application\FilterCriteria\UserFilterCriteria;
 use App\Application\Repository\UserRepository;
 use App\Application\Repository\UserSourceStrategyInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class UserRepositoryTest extends TestCase
+class UserRepositoryStrategySelectionTest extends TestCase
 {
     #[Test]
     #[DataProvider('repositoryMethodsProvider')]
@@ -76,9 +77,10 @@ class UserRepositoryTest extends TestCase
 
     public static function repositoryMethodsProvider(): iterable
     {
-        yield ['fetchAll', [], []];
-        yield ['fetchById', [1], null];
-        yield ['fetchByEmail', ['test@example.com'], null];
-        yield ['fetchByUsername', ['jdoe'], null];
+        yield 'find by criteria' => [
+            'method' => 'findByCriteria',
+            'args' => [new UserFilterCriteria(username: 'jdoe')],
+            'returnValue' => []
+        ];
     }
 }
