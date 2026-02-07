@@ -2,7 +2,6 @@
 
 namespace App\Tests\Infrastructure\Security\CommandHandler;
 
-use App\Application\FilterCriteria\UserFilterCriteria;
 use App\Application\Repository\UserRepositoryInterface;
 use App\Application\Security\Jwt\JwtFactoryInterface;
 use App\Domain\Entity\User;
@@ -42,9 +41,9 @@ class LoginCommandHandlerTest extends TestCase
 
         $this->userRepository
             ->expects($this->once())
-            ->method('findByCriteria')
-            ->with($this->isInstanceOf(UserFilterCriteria::class))
-            ->willReturn([$user]);
+            ->method('findOneByEmail')
+            ->with($email)
+            ->willReturn($user);
 
         $this->jwtFactory
             ->expects($this->once())

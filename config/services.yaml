@@ -29,3 +29,6 @@ services:
 #        resource: '../src/Infrastructure/GraphQL/Resolver'
 #        public: true
 #        tags: ['overblog_graphql.resolver']
+
+    Lcobucci\JWT\Configuration:
+        factory: ['@App\Infrastructure\Security\Jwt\JwtConfigurationFactory', 'create']

@@ -13,7 +13,12 @@ class UserRepositoryStrategySelectionTest extends TestCase
 {
     #[Test]
     #[DataProvider('repositoryMethodsProvider')]
-    public function it_should_delegate_all_calls_to_supported_strategy(string $method, array $args, mixed $returnValue): void
+    public function it_should_delegate_all_calls_to_supported_strategy(
+        string $method,
+        array $args,
+        array $findByCriteriaArgs,
+        mixed $returnValue
+    ): void
     {
         $activeSource = 'active_source';
 
@@ -30,9 +35,9 @@ class UserRepositoryStrategySelectionTest extends TestCase
             ->willReturn(true);
 
         $correctStrategy->expects($this->once())
-            ->method($method)
-            ->with(...$args)
-            ->willReturn($returnValue);
+            ->method('findByCriteria')
+            ->with(...$findByCriteriaArgs)
+            ->willReturn([]);
 
         $repository = new UserRepository([$wrongStrategy, $correctStrategy], $activeSource);
 
@@ -43,7 +48,12 @@ class UserRepositoryStrategySelectionTest extends TestCase
 
     #[Test]
     #[DataProvider('repositoryMethodsProvider')]
-    public function it_throws_exception_when_no_strategy_supports_source(string $method, array $args, mixed $returnValue): void
+    public function it_throws_exception_when_no_strategy_supports_source(
+        string $method,
+        array $args,
+        array $findByCriteriaArgs,
+        mixed $returnValue
+    ): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No strategy found for source: unknown');
@@ -54,7 +64,12 @@ class UserRepositoryStrategySelectionTest extends TestCase
 
     #[Test]
     #[DataProvider('repositoryMethodsProvider')]
-    public function it_throws_exception_when_multiple_strategies_exist_but_none_supports_source(string $method, array $args, mixed $returnValue): void
+    public function it_throws_exception_when_multiple_strategies_exist_but_none_supports_source(
+        string $method,
+        array $args,
+        array $findByCriteriaArgs,
+        mixed $returnValue
+    ): void
     {
         $strategy1 = $this->createMock(UserSourceStrategyInterface::class);
         $strategy1
@@ -77,10 +92,26 @@ class UserRepositoryStrategySelectionTest extends TestCase
 
     public static function repositoryMethodsProvider(): iterable
     {
+        $userFilterCriteria = UserFilterCriteria::create();
         yield 'find by criteria' => [
             'method' => 'findByCriteria',
-            'args' => [UserFilterCriteria::createWithEmail(email: 'jdoe')],
+            'args' => [$userFilterCriteria],
+            'findByCriteriaArgs' => [$userFilterCriteria],
             'returnValue' => []
+        ];
+
+        yield 'find one by id' => [
+            'method' => 'findOneById',
+            'args' => [1],
+            'findByCriteriaArgs' => [UserFilterCriteria::create()->withId(1)],
+            'returnValue' => null
+        ];
+
+        yield 'find one by email' => [
+            'method' => 'findOneByEmail',
+            'args' => ['jdoe@f.ca'],
+            'findByCriteriaArgs' => [UserFilterCriteria::create()->withEmail('jdoe@f.ca')],
+            'returnValue' => null
         ];
     }
 }

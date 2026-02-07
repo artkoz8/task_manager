@@ -9,9 +9,9 @@ final readonly class HttpQueryMapper
     public function toQueryParams(UserFilterCriteria $criteria): array
     {
         return array_filter([
-            'id' => $criteria->id,
-            'username' => $criteria->username,
-            'email' => $criteria->email,
+            'id' => $criteria->getId(),
+            'username' => $criteria->getUsername(),
+            'email' => $criteria->getEmail(),
         ], fn($value) => $value !== null);
     }
 }

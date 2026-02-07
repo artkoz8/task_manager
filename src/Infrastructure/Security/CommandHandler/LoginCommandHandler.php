@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Security\CommandHandler;
 
-use App\Application\FilterCriteria\UserFilterCriteria;
 use App\Application\Repository\UserRepositoryInterface;
 use App\Application\Security\Jwt\JwtFactoryInterface;
 use App\Infrastructure\Security\Command\LoginCommand;
@@ -24,14 +23,10 @@ readonly class LoginCommandHandler
     {
         $this->validate($command->email);
 
-        $userFilterCriteria  = UserFilterCriteria::createWithEmail($command->email);
-        $users = $this->userRepository->findByCriteria($userFilterCriteria);
-
-        if (count($users) !== 1) {
+        $user = $this->userRepository->findOneByEmail($command->email);
+        if ($user === null) {
             throw new RuntimeException('Nieprawidłowe dane logowania.');
         }
-
-        $user = $users[0];
 
         return $this->jwtFactory->createToken(
             (string) $user->getId(),
