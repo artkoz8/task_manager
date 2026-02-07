@@ -910,6 +910,48 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         query_match?: scalar|Param|null, // Default: null
  *     },
  * }
+ * @psalm-type TwigConfig = array{
+ *     form_themes?: list<scalar|Param|null>,
+ *     globals?: array<string, array{ // Default: []
+ *         id?: scalar|Param|null,
+ *         type?: scalar|Param|null,
+ *         value?: mixed,
+ *     }>,
+ *     autoescape_service?: scalar|Param|null, // Default: null
+ *     autoescape_service_method?: scalar|Param|null, // Default: null
+ *     base_template_class?: scalar|Param|null, // Deprecated: The child node "base_template_class" at path "twig.base_template_class" is deprecated.
+ *     cache?: scalar|Param|null, // Default: true
+ *     charset?: scalar|Param|null, // Default: "%kernel.charset%"
+ *     debug?: bool|Param, // Default: "%kernel.debug%"
+ *     strict_variables?: bool|Param, // Default: "%kernel.debug%"
+ *     auto_reload?: scalar|Param|null,
+ *     optimizations?: int|Param,
+ *     default_path?: scalar|Param|null, // The default path used to load templates. // Default: "%kernel.project_dir%/templates"
+ *     file_name_pattern?: list<scalar|Param|null>,
+ *     paths?: array<string, mixed>,
+ *     date?: array{ // The default format options used by the date filter.
+ *         format?: scalar|Param|null, // Default: "F j, Y H:i"
+ *         interval_format?: scalar|Param|null, // Default: "%d days"
+ *         timezone?: scalar|Param|null, // The timezone used when formatting dates, when set to null, the timezone returned by date_default_timezone_get() is used. // Default: null
+ *     },
+ *     number_format?: array{ // The default format options for the number_format filter.
+ *         decimals?: int|Param, // Default: 0
+ *         decimal_point?: scalar|Param|null, // Default: "."
+ *         thousands_separator?: scalar|Param|null, // Default: ","
+ *     },
+ *     mailer?: array{
+ *         html_to_text_converter?: scalar|Param|null, // A service implementing the "Symfony\Component\Mime\HtmlToTextConverter\HtmlToTextConverterInterface". // Default: null
+ *     },
+ * }
+ * @psalm-type OverblogGraphiqlConfig = array{
+ *     endpoint_resolver?: scalar|Param|null, // Default: "Overblog\\GraphiQLBundle\\Config\\GraphQLEndpoint\\Helpers\\OverblogGraphQLBundleEndpointResolver"
+ *     template?: scalar|Param|null, // In case you need it's possible to replace GraphiQL twig template // Default: "@OverblogGraphiQL/GraphiQL/index.html.twig"
+ *     javascript_libraries?: array{
+ *         graphiql?: scalar|Param|null, // Default: "0.11"
+ *         react?: scalar|Param|null, // Default: "15.6"
+ *         fetch?: scalar|Param|null, // Default: "2.0"
+ *     },
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -917,6 +959,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     framework?: FrameworkConfig,
  *     monolog?: MonologConfig,
  *     overblog_graphql?: OverblogGraphqlConfig,
+ *     twig?: TwigConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -924,6 +967,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         framework?: FrameworkConfig,
  *         monolog?: MonologConfig,
  *         overblog_graphql?: OverblogGraphqlConfig,
+ *         twig?: TwigConfig,
+ *         overblog_graphiql?: OverblogGraphiqlConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -932,6 +977,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         framework?: FrameworkConfig,
  *         monolog?: MonologConfig,
  *         overblog_graphql?: OverblogGraphqlConfig,
+ *         twig?: TwigConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -940,6 +986,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         framework?: FrameworkConfig,
  *         monolog?: MonologConfig,
  *         overblog_graphql?: OverblogGraphqlConfig,
+ *         twig?: TwigConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
