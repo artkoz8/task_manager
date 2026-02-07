@@ -6,6 +6,6 @@ use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
 #[Exclude]
-#[GQL\Type(name: 'Query')]
-final readonly class PingQuery
+#[GQL\Type(name: 'Mutation')]
+final readonly class Mutation
 {}

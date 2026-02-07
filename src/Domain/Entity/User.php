@@ -2,6 +2,9 @@
 
 namespace App\Domain\Entity;
 
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
+
+#[Exclude]
 readonly class User
 {
     private function __construct(

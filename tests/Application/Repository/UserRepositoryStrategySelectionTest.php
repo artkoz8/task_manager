@@ -79,7 +79,7 @@ class UserRepositoryStrategySelectionTest extends TestCase
     {
         yield 'find by criteria' => [
             'method' => 'findByCriteria',
-            'args' => [new UserFilterCriteria(username: 'jdoe')],
+            'args' => [UserFilterCriteria::createWithEmail(email: 'jdoe')],
             'returnValue' => []
         ];
     }

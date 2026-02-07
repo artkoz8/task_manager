@@ -45,7 +45,7 @@ class LcobucciJwtFactory implements JwtFactoryInterface
             ->issuedAt($now)
             ->canOnlyBeUsedAfter($now)
             ->expiresAt($now->modify(sprintf('+%d seconds', $this->tokenTtl)))
-            ->withClaim('sub', $userId)
+            ->relatedTo($userId)
             ->withClaim('email', $email)
             ->getToken($this->configuration->signer(), $this->configuration->signingKey());
 

@@ -3,14 +3,15 @@
 namespace App\Application\FilterCriteria;
 
 use App\Application\Query\GetUsersQuery;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 final readonly class UserFilterCriteria
 {
-    public function __construct(
+    private function __construct(
         public ?int $id = null,
         public ?string $username = null,
         public ?string $email = null,
-        public ?string $name = null,
     ) {}
 
     public static function fromQuery(GetUsersQuery $query): self
@@ -22,10 +23,8 @@ final readonly class UserFilterCriteria
         );
     }
 
-    public function hasFilters(): bool
+    public static function createWithEmail(string $email): self
     {
-        return $this->id !== null
-            || $this->username !== null
-            || $this->email !== null;
+        return new self(email: $email);
     }
 }

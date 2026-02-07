@@ -3,7 +3,9 @@
 namespace App\Application\ReadModel;
 
 use App\Domain\Entity\User;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 readonly class UserReadModel
 {
     public function __construct(
