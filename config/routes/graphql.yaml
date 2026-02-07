@@ -1,2 +1,6 @@
 overblog_graphql_endpoint:
-    resource: "@OverblogGraphQLBundle/Resources/config/routing/graphql.yml"
+    path: /graphql
+    controller: Overblog\GraphQLBundle\Controller\GraphController::endpointAction
+    methods: [POST]
+    defaults:
+        schemaName: default
