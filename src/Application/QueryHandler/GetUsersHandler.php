@@ -22,7 +22,12 @@ readonly class GetUsersHandler
      */
     public function __invoke(GetUsersQuery $query): array
     {
-        $users = $this->userRepository->findByCriteria(UserFilterCriteria::fromQuery($query));
+        $criteria = UserFilterCriteria::create()
+            ->withId($query->id)
+            ->withUsername($query->username)
+            ->withEmail($query->email);
+
+        $users = $this->userRepository->findByCriteria($criteria);
 
         return array_map(
             fn($user) => UserReadModel::fromEntity($user),

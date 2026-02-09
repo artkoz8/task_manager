@@ -1,0 +1,39 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_user_provider:
+            id: App\Infrastructure\Security\User\JwtUserProvider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)
+            security: false
+
+        graphql_explorer:
+            pattern: ^/graphiql
+            security: false
+
+        auth_login:
+            pattern: ^/api/login
+            stateless: true
+            security: false
+
+        main:
+            pattern: ^/graphql
+            stateless: true
+            provider: app_user_provider
+
+            custom_authenticators:
+                - App\Infrastructure\Security\Jwt\JwtAuthenticator
+
+    access_control:
+        - { path: ^/graphql, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+
+#when@dev:
+#    security:
+#        firewalls:
+#            main:
+#                security: true

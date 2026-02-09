@@ -33,6 +33,7 @@ generate_secret_keys: ## Generuje parę kluczy secret
 
 cache_clear: ## Czyszczenie cache aplikacji
 	rm -rf var/cache/*
+	rm -rf var/log/*
 	$(CONSOLE) cache:clear
 
 graphQL_dump_schema: cache_clear ## Wykonaj dump schem dla graphQL

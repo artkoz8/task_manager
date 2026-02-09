@@ -4,9 +4,13 @@ framework:
         default_bus: query.bus
         buses:
             query.bus:
-#                # Middleware dla Query Bus (np. walidacja, jeśli potrzebna)
-#                middleware:
-#                    - validation
+            # Middleware dla Query Bus (np. walidacja, jeśli potrzebna)
+            # middleware:
+            #   - validation
+            command.bus:
+            # Middleware dla Command Bus (np. walidacja, jeśli potrzebna)
+            # middleware:
+            #   - validation
 
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed

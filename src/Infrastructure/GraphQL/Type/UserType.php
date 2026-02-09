@@ -4,7 +4,9 @@ namespace App\Infrastructure\GraphQL\Type;
 
 use App\Application\ReadModel\UserReadModel;
 use Overblog\GraphQLBundle\Annotation as GQL;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 #[GQL\Type(name: 'User')]
 readonly class UserType
 {

@@ -1,0 +1,3 @@
+app_attributes_routing:
+    resource: ../../src/
+    type: attribute

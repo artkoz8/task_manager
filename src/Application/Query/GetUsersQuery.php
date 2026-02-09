@@ -3,7 +3,9 @@
 namespace App\Application\Query;
 
 use App\Infrastructure\GraphQL\Input\UserFiltersInput;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 final readonly class GetUsersQuery
 {
     public function __construct(

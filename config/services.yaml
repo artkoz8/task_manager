@@ -7,6 +7,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    jwt_private_key: '%kernel.project_dir%/%env(JWT_PRIVATE_KEY_PATH)%'
+    jwt_public_key: '%kernel.project_dir%/%env(JWT_PUBLIC_KEY_PATH)%'
 
 services:
     # default configuration for services in *this* file
@@ -18,11 +20,6 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
-        exclude:
-            - '../src/Application/ReadModel/'
-            - '../src/Application/Query/'
-            - '../src/Domain/Entity/'
-            - '../src/Infrastructure/GraphQL/Type/'
         public: true
 
     # add more service definitions when explicit configuration is needed
@@ -32,3 +29,6 @@ services:
 #        resource: '../src/Infrastructure/GraphQL/Resolver'
 #        public: true
 #        tags: ['overblog_graphql.resolver']
+
+    Lcobucci\JWT\Configuration:
+        factory: ['@App\Infrastructure\Security\Jwt\JwtConfigurationFactory', 'create']

@@ -10,3 +10,8 @@ overblog_graphql:
                 - type: attribute
                   dir: '%kernel.project_dir%/src/Infrastructure/GraphQL'
                   suffix: null
+
+overblog_graphiql:
+    javascript_libraries:
+        graphiql: "2.4.7"
+        react: "17.0.2"
