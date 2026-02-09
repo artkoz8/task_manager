@@ -3,10 +3,16 @@
 namespace App\Infrastructure\GraphQL\Resolver;
 
 use App\Application\Command\CreateTaskCommand;
+use App\Application\Command\SetAsCanceledTaskCommand;
+use App\Application\Command\SetAsCompleteTaskCommand;
+use App\Application\Command\SetAsPendingTaskCommand;
+use App\Application\Command\SetAsInProgressTaskCommand;
+use App\Application\Command\UpdateTaskCommand;
 use App\Infrastructure\GraphQL\Input\CreateTaskInput;
+use App\Infrastructure\GraphQL\Input\UpdateTaskInput;
+use App\Infrastructure\GraphQL\Type\TaskPayload;
 use App\Infrastructure\Security\User\UserContext;
 use Symfony\Component\Messenger\HandleTrait;
-use Symfony\Component\Uid\Uuid;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -24,22 +30,77 @@ class TaskMutationResolver
     }
 
     #[GQL\Mutation(name: "createTask", type: "TaskPayload")]
-    #[GQL\Arg(name: 'createTaskInput', type: 'CreateTaskInput!', description: 'Payload z danymi nowego zadania')]
-    public function createTask(CreateTaskInput $createTaskInput): array
+    #[GQL\Arg(name: 'createTaskInput', type: 'CreateTaskInput!')]
+    public function createTask(CreateTaskInput $createTaskInput): TaskPayload
     {
         $authorId = $this->userContext->getCurrentUser()->id;
-        $taskId = Uuid::v4()->toRfc4122();
 
-        $this->handle(new CreateTaskCommand(
-            $taskId,
+        $createdTask = $this->handle(new CreateTaskCommand(
             $createTaskInput->title,
             $createTaskInput->description,
             $authorId
         ));
 
-        return [
-            'id' => 2,
-            'status' => 'TODO'
-        ];
+        return TaskPayload::createFromReadModel($createdTask);
+    }
+
+    #[GQL\Mutation(name: "updateTask", type: "TaskPayload")]
+    #[GQL\Arg(name: 'taskId', type: 'String!')]
+    #[GQL\Arg(name: 'updateTaskInput', type: 'UpdateTaskInput!')]
+    public function updateTask(string $taskId, UpdateTaskInput $updateTaskInput): TaskPayload
+    {
+        $this->userContext->getCurrentUser();
+
+        $task = $this->handle(new UpdateTaskCommand(
+            $taskId,
+            $updateTaskInput->title,
+            $updateTaskInput->description
+        ));
+
+        return TaskPayload::createFromReadModel($task);
+    }
+
+    #[GQL\Mutation(name: "setAsPendingTask", type: "TaskPayload")]
+    #[GQL\Arg(name: 'taskId', type: 'String!')]
+    public function setAsPendingTask(string $taskId): TaskPayload
+    {
+        $this->userContext->getCurrentUser();
+
+        $createdTask = $this->handle(new SetAsPendingTaskCommand($taskId));
+
+        return TaskPayload::createFromReadModel($createdTask);
+    }
+
+    #[GQL\Mutation(name: "setAsInProgressTask", type: "TaskPayload")]
+    #[GQL\Arg(name: 'taskId', type: 'String!')]
+    public function setAsInProgressTask(string $taskId): TaskPayload
+    {
+        $this->userContext->getCurrentUser();
+
+        $task = $this->handle(new SetAsInProgressTaskCommand($taskId));
+
+        return TaskPayload::createFromReadModel($task);
+    }
+
+    #[GQL\Mutation(name: "setAsCompleteTask", type: "TaskPayload")]
+    #[GQL\Arg(name: 'taskId', type: 'String!')]
+    public function setAsCompleteTask(string $taskId): TaskPayload
+    {
+        $this->userContext->getCurrentUser();
+
+        $task = $this->handle(new SetAsCompleteTaskCommand($taskId));
+
+        return TaskPayload::createFromReadModel($task);
+    }
+
+    #[GQL\Mutation(name: "setAsCanceledTask", type: "TaskPayload")]
+    #[GQL\Arg(name: 'taskId', type: 'String!')]
+    public function setAsCanceledTask(string $taskId): TaskPayload
+    {
+        $this->userContext->getCurrentUser();
+
+        $task = $this->handle(new SetAsCanceledTaskCommand($taskId));
+
+        return TaskPayload::createFromReadModel($task);
     }
 }

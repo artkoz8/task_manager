@@ -5,12 +5,12 @@ namespace App\Application\Command;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
 #[Exclude]
-final readonly class CreateTaskCommand
+final readonly class UpdateTaskCommand
 {
     public function __construct(
-        public string $title,
-        public string $description,
-        public string $authorId,
+        public string $taskId,
+        public ?string $title,
+        public ?string $description,
     )
     {
     }
