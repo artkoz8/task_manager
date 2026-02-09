@@ -7,6 +7,9 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "*",
+        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/orm": "^3.6",
         "lcobucci/jwt": "^5.6",
         "overblog/graphql-bundle": "^1.9",
         "symfony/console": "7.4.*",
@@ -16,8 +19,12 @@
         "symfony/http-client": "7.4.*",
         "symfony/messenger": "7.4.*",
         "symfony/monolog-bundle": "^4.0",
+        "symfony/property-access": "7.4.*",
+        "symfony/property-info": "7.4.*",
         "symfony/runtime": "7.4.*",
         "symfony/security-bundle": "7.4.*",
+        "symfony/serializer": "7.4.*",
+        "symfony/uid": "7.4.*",
         "symfony/yaml": "7.4.*"
     },
     "require-dev": {
