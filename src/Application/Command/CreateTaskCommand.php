@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Attribute\Exclude;
 final readonly class CreateTaskCommand
 {
     public function __construct(
+        public string $taskId,
         public string $title,
         public string $description,
         public string $authorId,
